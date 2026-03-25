@@ -17,6 +17,9 @@ function refreshWeather(response) {
   windSpeedElement.innerHTML = `${response.data.wind.speed} km/h`;
   temperatureElement.innerHTML = Math.round(temperature);
   iconElement.innerHTML = `<img src="${response.data.condition.icon_url}" class="weather-app-icon" />`;
+
+  
+  getForecast(response.data.city);
 }
 
 function displayForecast(response) {
@@ -43,12 +46,11 @@ function displayForecast(response) {
     }
   });
 
-  let forecastElement = document.querySelector("#forecast");
-  forecastElement.innerHTML = forecastHTML;
+  document.querySelector("#forecast").innerHTML = forecastHTML;
 }
 
 function getForecast(city) {
-  let apiKey = "YOUR_API_KEY"; // 🔥 PUT YOUR REAL API KEY HERE
+  let apiKey = "b2a5adcct04b33178913oc335f405433"; 
   let url = `https://api.shecodes.io/weather/v1/forecast?query=${city}&key=${apiKey}&units=metric`;
 
   axios.get(url).then(displayForecast);
@@ -59,13 +61,7 @@ function formatDate(date) {
   let hours = date.getHours();
 
   let days = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
+    "Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"
   ];
 
   let day = days[date.getDay()];
@@ -79,24 +75,21 @@ function formatDate(date) {
 
 function searchCity(city) {
   let apiKey = "b2a5adcct04b33178913oc335f405433";
-  let url = `https://api.shecodes.io/weather/v1/forecast?query=${city}&key=${apiKey}&units=metric`;
+  let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=metric`;
 
-  axios.get(apiUrl).then(function (response) {
-    refreshWeather(response);
-    getForecast(response.data.city); 
-  });
+  axios.get(apiUrl).then(refreshWeather);
 }
 
 function handleSearchSubmit(event) {
   event.preventDefault();
   let searchInput = document.querySelector("#search-form-input");
-
   searchCity(searchInput.value);
 }
 
-// Event listener
-let searchFormElement = document.querySelector("#search-form");
-searchFormElement.addEventListener("submit", handleSearchSubmit);
 
-// Default city
+document
+  .querySelector("#search-form")
+  .addEventListener("submit", handleSearchSubmit);
+
+
 searchCity("Lusaka");

@@ -1,47 +1,51 @@
 body {
   background-color: #f9f7fe;
   font-family: "Roboto", sans-serif;
+  margin: 0;
 }
 
+/* Links */
 a {
   color: #885df1;
   text-decoration: none;
 }
 
+/* App container */
 .weather-app {
   background: white;
   max-width: 600px;
-  margin: 45px auto;
-  box-shadow: 0 30px 50px rgba(65, 50, 100, 0.08);
-  border-radius: 16px;
+  margin: 40px auto;
   padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 30px 50px rgba(65, 50, 100, 0.08);
 }
 
+/* Header */
 header {
-  border-bottom: 1px solid #f9f7fe;
-  padding-bottom: 30px;
+  border-bottom: 1px solid #f1eff7;
+  padding-bottom: 20px;
 }
 
+/* Search form */
 .search-form {
   display: flex;
-  justify-content: space-between;
+  gap: 10px;
 }
 
 .search-form-input {
-  background-color: #f9f7fe;
+  flex: 1;
+  padding: 12px 15px;
   border: none;
   border-radius: 6px;
-  width: 75%;
+  background-color: #f9f7fe;
   font-size: 16px;
-  padding: 15px 20px;
 }
 
 .search-form-button {
-  background: #885df1;
-  padding: 15px 25px;
+  padding: 12px 20px;
   border: none;
-  font-size: 16px;
   border-radius: 6px;
+  background: #885df1;
   color: white;
   cursor: pointer;
   transition: 0.3s;
@@ -51,10 +55,12 @@ header {
   background: #6c47d9;
 }
 
+/* Main */
 main {
-  padding: 30px 0;
+  padding: 25px 0;
 }
 
+/* Current weather */
 .weather-app-data {
   display: flex;
   justify-content: space-between;
@@ -63,43 +69,40 @@ main {
 
 .weather-app-city {
   margin: 0;
-  font-size: 38px;
-  line-height: 48px;
+  font-size: 36px;
 }
 
 .weather-app-details {
-  font-size: 16px;
+  font-size: 14px;
   color: rgba(39, 33, 66, 0.5);
-  line-height: 24px;
-  font-weight: 500;
 }
 
 .weather-app-details strong {
   color: #f65282;
 }
 
+/* Temperature */
 .weather-app-temperature-container {
   display: flex;
   align-items: center;
 }
 
 .weather-app-icon {
-  width: 80px;
-  height: 80px;
+  width: 70px;
 }
 
 .weather-app-temperature {
-  font-size: 80px;
+  font-size: 70px;
   font-weight: bold;
   margin-left: 10px;
 }
 
 .weather-app-unit {
-  font-size: 28px;
+  font-size: 24px;
   margin-top: 10px;
 }
 
-/* 🌤️ Forecast Section */
+/* Forecast */
 .weather-forecast {
   display: flex;
   justify-content: space-between;
@@ -128,15 +131,16 @@ main {
   color: #a52b95;
 }
 
+/* Footer */
 footer {
-  border-top: 1px solid #f9f7fe;
+  border-top: 1px solid #f1eff7;
   padding-top: 20px;
   text-align: center;
-  font-size: 14px;
+  font-size: 13px;
   color: rgba(0, 0, 0, 0.6);
 }
 
-/* 📱 Responsive Design */
+/* Responsive */
 @media (max-width: 600px) {
   .weather-app {
     padding: 20px;
