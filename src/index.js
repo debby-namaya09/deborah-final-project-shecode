@@ -1,26 +1,63 @@
 function refreshWeather(response) {
   let temperatureElement = document.querySelector("#temperature");
-  let temperature = response.data.temperature.current;
   let cityElement = document.querySelector("#city");
   let descriptionElement = document.querySelector("#description");
   let humidityElement = document.querySelector("#humidity");
   let windSpeedElement = document.querySelector("#wind-speed");
   let timeElement = document.querySelector("#time");
-  let date = new Date(response.data.time * 1000);
   let iconElement = document.querySelector("#icon");
+
+  let temperature = response.data.temperature.current;
+  let date = new Date(response.data.time * 1000);
 
   cityElement.innerHTML = response.data.city;
   timeElement.innerHTML = formatDate(date);
   descriptionElement.innerHTML = response.data.condition.description;
   humidityElement.innerHTML = `${response.data.temperature.humidity}%`;
-  windSpeedElement.innerHTML = `${response.data.wind.speed}km/h`;
+  windSpeedElement.innerHTML = `${response.data.wind.speed} km/h`;
   temperatureElement.innerHTML = Math.round(temperature);
   iconElement.innerHTML = `<img src="${response.data.condition.icon_url}" class="weather-app-icon" />`;
+}
+
+function displayForecast(response) {
+  let forecast = response.data.daily;
+  let forecastHTML = "";
+
+  forecast.forEach(function (day, index) {
+    if (index < 5) {
+      let date = new Date(day.time * 1000);
+      let dayName = date.toLocaleDateString("en-US", {
+        weekday: "short",
+      });
+
+      forecastHTML += `
+        <div class="forecast-day">
+          <div>${dayName}</div>
+          <img src="${day.condition.icon_url}" width="40" />
+          <div>
+            <strong>${Math.round(day.temperature.maximum)}°</strong>
+            ${Math.round(day.temperature.minimum)}°
+          </div>
+        </div>
+      `;
+    }
+  });
+
+  let forecastElement = document.querySelector("#forecast");
+  forecastElement.innerHTML = forecastHTML;
+}
+
+function getForecast(city) {
+  let apiKey = "YOUR_API_KEY"; // 🔥 PUT YOUR REAL API KEY HERE
+  let url = `https://api.shecodes.io/weather/v1/forecast?query=${city}&key=${apiKey}&units=metric`;
+
+  axios.get(url).then(displayForecast);
 }
 
 function formatDate(date) {
   let minutes = date.getMinutes();
   let hours = date.getHours();
+
   let days = [
     "Sunday",
     "Monday",
@@ -30,6 +67,7 @@ function formatDate(date) {
     "Friday",
     "Saturday",
   ];
+
   let day = days[date.getDay()];
 
   if (minutes < 10) {
@@ -41,8 +79,12 @@ function formatDate(date) {
 
 function searchCity(city) {
   let apiKey = "b2a5adcct04b33178913oc335f405433";
-  let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}`;
-  axios.get(apiUrl).then(refreshWeather);
+  let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=metric`;
+
+  axios.get(apiUrl).then(function (response) {
+    refreshWeather(response);
+    getForecast(response.data.city); // ✅ THIS CALLS FORECAST
+  });
 }
 
 function handleSearchSubmit(event) {
@@ -52,33 +94,9 @@ function handleSearchSubmit(event) {
   searchCity(searchInput.value);
 }
 
-function displayForecast() {
-  let days = ["Tue", "Wed", "Thu", "Fri", "Sat"];
-  let forecastHtml = "";
-
-  days.forEach(function (day) {
-    forecastHtml =
-      forecastHtml +
-      `
-      <div class="weather-forecast-day">
-        <div class="weather-forecast-date">${day}</div>
-        <div class="weather-forecast-icon">🌤️</div>
-        <div class="weather-forecast-temperatures">
-          <div class="weather-forecast-temperature">
-            <strong>15º</strong>
-          </div>
-          <div class="weather-forecast-temperature">9º</div>
-        </div>
-      </div>
-    `;
-  });
-
-  let forecastElement = document.querySelector("#forecast");
-  forecastElement.innerHTML = forecastHtml;
-}
-
+// Event listener
 let searchFormElement = document.querySelector("#search-form");
 searchFormElement.addEventListener("submit", handleSearchSubmit);
 
-searchCity("lusaka");
-displayForecast();s
+// Default city
+searchCity("Lusaka");
